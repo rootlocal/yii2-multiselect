@@ -69,32 +69,55 @@ class MultiSelectWidget extends Widget
         $defaultClientOptions = [
             'includeSelectAllOption' => true,
             'numberDisplayed' => 2,
-
+            'afterInit' => new JsExpression('function (ms) {
+                var that = this,
+                $selectableSearch = that.$selectableUl.next(),
+                $selectionSearch = that.$selectionUl.next(),
+                selectableSearchString = "#" + that.$container.attr("id") + " .ms-elem-selectable:not(.ms-selected)",
+                selectionSearchString = "#" + that.$container.attr("id") + " .ms-elem-selection.ms-selected";
+                
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString).on("keydown", function (e) {
+                    if (e.which === 40) {
+                        that.$selectableUl.focus();
+                        return false;
+                    }
+                });
+    
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString).on("keydown", function (e) {
+                    if (e.which === 40) {
+                        that.$selectionUl.focus();
+                        return false;
+                    }
+                });
+            }'),
             'afterSelect' => new JsExpression('function(value){
-            var url = "' . $this->selectUrl . '";
-            if(url.indexOf("?") === -1) {
-             url += "?item="+value;
-             } else {
-            url += "&item="+value;
-            }
-        $.get(url, function(data, status){});}'),
+                var url = "' . $this->selectUrl . '";
+                if(url.indexOf("?") === -1) {
+                    url += "?item="+value;
+                } else {
+                    url += "&item="+value;
+                }
+            $.get(url, function(data, status){});}'),
 
             'afterDeselect' => new JsExpression('function(value){
-            var url = "' . $this->deselectUrl . '";
-            if(url.indexOf("?") === -1) {
-             url += "?item="+value;
-             } else {
-            url += "&item="+value;
-            }
-        $.get(url, function(data, status){});}'),
-
-            //'selectableHeader' => '<input type="text" class="search-input" autocomplete="on">',
-            //'selectionHeader' => '<input type="text" class="search-input" autocomplete="on">',
+                var url = "' . $this->deselectUrl . '";
+                if(url.indexOf("?") === -1) {
+                    url += "?item="+value;
+                } else {
+                    url += "&item="+value;
+                }
+            $.get(url, function(data, status){});}'),
 
             'selectableHeader' => '<div class="box-header">'
                 . Yii::t('multiselect', 'Selectable Items') . '</div>',
             'selectionHeader' => '<div class="box-header">'
                 . Yii::t('multiselect', 'Selected Items') . '</div>',
+
+            'selectableFooter' => '<input type="text" class="search-input form-control" autocomplete="off" 
+            placeholder="' . Yii::t('multiselect', 'Search') . '">',
+            'selectionFooter' => '<input type="text" class="search-input form-control" autocomplete="off" 
+            placeholder="' . Yii::t('multiselect', 'Search') . '">',
+
         ];
 
         $this->clientOptions = ArrayHelper::merge($defaultClientOptions, $this->clientOptions);
@@ -109,6 +132,7 @@ class MultiSelectWidget extends Widget
     protected function registerAssets(View $view)
     {
         MultiSelectAsset::register($view);
+        QuicksearchAsset::register($view);
     }
 
     /**
