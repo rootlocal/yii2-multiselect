@@ -24,7 +24,7 @@
     "yiisoft/yii2": "~2.0",
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "2amigos/yii2-multi-select-widget": "*",
-    "bower-asset/quicksearch": "dev-master"
+    "bower-asset/quicksearch": "~2.4.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
