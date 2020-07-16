@@ -1,7 +1,7 @@
 {
   "name": "rootlocal/yii2-multiselect",
   "description": "MultiSelect Widget for Yii2",
-  "type": "yii2-extension multiselect",
+  "type": "yii2-extension",
   "keywords": [
     "yii2",
     "extension",
