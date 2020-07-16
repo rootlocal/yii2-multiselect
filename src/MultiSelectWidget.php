@@ -54,10 +54,25 @@ class MultiSelectWidget extends Widget
         $defaultClientOptions = [
             'includeSelectAllOption' => true,
             'numberDisplayed' => 2,
+
             'afterSelect' => new JsExpression('function(value){
-        $.get("' . $this->selectUrl . '?item="+value, function(data, status){});}'),
+            var url = "' . $this->selectUrl . '";
+            if(url.indexOf("?") === -1) {
+             url += "?item="+value;
+             } else {
+            url += "&item="+value;
+            }
+        $.get(url, function(data, status){});}'),
+
             'afterDeselect' => new JsExpression('function(value){
-        $.get("' . $this->deselectUrl . '?item="+value, function(data, status){});}'),
+            var url = "' . $this->deselectUrl . '";
+            if(url.indexOf("?") === -1) {
+             url += "?item="+value;
+             } else {
+            url += "&item="+value;
+            }
+        $.get(url, function(data, status){});}'),
+
             //'selectableHeader' => '<input type="text" class="search-input" autocomplete="on">',
             //'selectionHeader' => '<input type="text" class="search-input" autocomplete="on">',
 
