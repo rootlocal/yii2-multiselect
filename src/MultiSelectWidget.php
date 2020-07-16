@@ -5,9 +5,11 @@ namespace rootlocal\widgets\multiselect;
 use Yii;
 use dosamigos\multiselect\MultiSelectListBox;
 use Exception;
+use yii\base\InvalidArgumentException;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\web\View;
 
@@ -23,10 +25,16 @@ class MultiSelectWidget extends Widget
     public $selectableItems = [];
     /** @var array */
     public $selectedItems = [];
-    /** @var string */
-    public $selectUrl = '/test/assign/test1';
-    /** @var string */
-    public $deselectUrl = '/test/revoke/test2';
+    /**
+     * @var string|array the parameter to be used to generate a valid URL
+     * @see Url::to
+     */
+    public $selectUrl;
+    /**
+     * @var string|array the parameter to be used to generate a valid URL
+     * @see Url::to
+     */
+    public $deselectUrl;
     /**
      * @var array the HTML attributes for the input tag.
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
@@ -49,6 +57,13 @@ class MultiSelectWidget extends Widget
 
         if (!isset($this->options['multiple'])) {
             $this->options['multiple'] = 'multiple';
+        }
+
+        if ($this->selectUrl !== null) {
+            $this->selectUrl = Url::to($this->selectUrl);
+        }
+        if ($this->deselectUrl !== null) {
+            $this->deselectUrl = Url::to($this->deselectUrl);
         }
 
         $defaultClientOptions = [
