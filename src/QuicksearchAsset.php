@@ -16,7 +16,7 @@ class QuicksearchAsset extends AssetBundle
     /** @var string */
     public $sourcePath = '@bower/quicksearch/dist';
     /** @var string[] */
-    public $js = ['jquery.quicksearch.' . (YII_DEBUG ? 'min' : '') . '.js'];
+    public $js = ['jquery.quicksearch' . (YII_DEBUG ? '' : '.min') . '.js'];
     /** @var array */
     public $css = [];
     /** @var string[] */
